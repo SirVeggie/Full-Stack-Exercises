@@ -1,31 +1,35 @@
 import React from 'react';
 
 function App() {
-  const course = 'Half stack application development';
-  const part1 = 'Fundamentals of React';
-  const exercises1 = 10;
-  const part2 = 'Using props to pass data';
-  const exercises2 = 7;
-  const part3 = 'State of a component';
-  const exercises3 = 14;
-
-  const details = [
-    { description: part1, points: exercises1 },
-    { description: part2, points: exercises2 },
-    { description: part3, points: exercises3 }
-  ];
+  const course = {
+    name: 'Half stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  };
 
   const total = {
-    description: 'Number of exercises',
-    points: exercises1 + exercises2 + exercises3
+    name: 'Number of exercises',
+    exercises: course.parts.map(x => x.exercises).reduce((a, b) => a + b, 0)
   };
 
   return (
     <div>
-      <Header data={course} />
-      <Content data={details} />
+      <Header data={course.name} />
+      <Content data={course.parts} />
       <Total data={total} />
-    </div>
+    </div >
   );
 }
 
@@ -51,7 +55,7 @@ function Total(props: Prop<Detail>) {
 
 function Part(props: Prop<Detail>) {
   return (
-    <p>{props.data.description}: {props.data.points}</p>
+    <p>{props.data.name}: {props.data.exercises}</p>
   );
 }
 

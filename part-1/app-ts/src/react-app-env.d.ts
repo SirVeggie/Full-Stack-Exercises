@@ -1,8 +1,8 @@
 /// <reference types="react-scripts" />
 
 interface Detail {
-	description: string;
-	points: number;
+	name: string;
+	exercises: number;
 }
 
 interface Prop<Type> {
