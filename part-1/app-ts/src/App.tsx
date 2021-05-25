@@ -33,29 +33,29 @@ function App() {
   );
 }
 
-function Header(props: Prop<string>) {
-  return (<h1>{props.data}</h1>);
+function Header({ data }: Prop<string>) {
+  return (<h1>{data}</h1>);
 }
 
-function Content(props: Prop<Detail[]>) {
+function Content({ data }: Prop<Detail[]>) {
   return (
     <div>
-      <Part data={props.data[0]} />
-      <Part data={props.data[1]} />
-      <Part data={props.data[2]} />
+      <Part data={data[0]} />
+      <Part data={data[1]} />
+      <Part data={data[2]} />
     </div>
   );
 }
 
-function Total(props: Prop<Detail>) {
+function Total({ data }: Prop<Detail>) {
   return (
-    <Part data={props.data} />
+    <Part data={data} />
   );
 }
 
-function Part(props: Prop<Detail>) {
+function Part({ data }: Prop<Detail>) {
   return (
-    <p>{props.data.name}: {props.data.exercises}</p>
+    <p>{data.name}: {data.exercises}</p>
   );
 }
 
