@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import db from 'json-server';
 import Form from './Form';
 import Search from './Search';
 import Numbers from './Numbers';
 
 function App() {
-  const init: Person[] = [
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ];
-  
+  const init: Person[] = [];
   const [persons, setPersons] = useState(init);
   const [search, setSearch] = useState('');
-
+  
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons').then(x => setPersons(x.data));
+  }, []);
+  
   return (
     <div>
       <h2>Phonebook</h2>
