@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 
-function Form({ update, persons }: { persons: Person[], update: (value: Person) => void; }) {
+function Form({ update, persons, setNotif }: { persons: Person[], update: (value: Person) => void, setNotif: (alert: Alert) => void; }) {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
   const submit = (event: any) => {
+    const newID = persons[persons.length - 1].id + 1;
     event.preventDefault();
-    const person: Person = { name: newName, number: newNumber };
-    if (checkValidity(person, persons))
+    const person: Person = { id: newID, name: newName, number: newNumber };
+
+    if (checkValidity(person, persons, setNotif))
       update(person);
+
     setNewName('');
     setNewNumber('');
   };
@@ -37,19 +40,14 @@ function Form({ update, persons }: { persons: Person[], update: (value: Person) 
   );
 }
 
-function checkValidity(p: Person, persons: Person[]) {
+function checkValidity(p: Person, persons: Person[], setNotif: (alert: Alert) => void) {
   if (p.name === '' || p.number === '') {
-    window.alert('Blanks are not allowed');
+    setNotif({ type: 'error', msg: 'Blanks are not allowed' });
     return false;
   }
-
-  if (persons.find(x => x.name === p.name)) {
-    window.alert(`Name '${p.name}' already exists in the phonebook`);
-    return false;
-  }
-
+  
   if (persons.find(x => x.number === p.number)) {
-    window.alert(`Number '${p.number}' already exists in the phonebook`);
+    setNotif({ type: 'error', msg: `Number '${p.number}' already exists in the phonebook` });
     return false;
   }
 

@@ -7,7 +7,7 @@ function Search({ update }: { update: (s: string) => void; }) {
     update(value);
     setValue('');
   };
-  
+
   return (
     <div>
       <form onSubmit={submit}>
