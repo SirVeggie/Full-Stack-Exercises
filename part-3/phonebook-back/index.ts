@@ -1,109 +1,104 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import dao from './src/dao';
+
+morgan.token('body', (req: any) => JSON.stringify(req.body));
 
 const server = express();
-server.use(cors());
-server.use(express.json());
-morgan.token('body', (req: any, res: any) => JSON.stringify(req.body));
-server.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 server.use(express.static('build'));
+server.use(express.json());
+server.use(cors());
+server.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
-let persons = [
-	{
-		"name": "Arto Hellas",
-		"number": "123-88-1234567",
-		"id": 1
-	},
-	{
-		"name": "Ada Lovelace",
-		"number": "39-44-5323523",
-		"id": 2
-	},
-	{
-		"name": "Dan Abramov",
-		"number": "12-43-234345",
-		"id": 3
-	},
-	{
-		"name": "Mary Poppendieck",
-		"number": "39-23-6423122",
-		"id": 4
-	}
-];
+//=====| controllers |=====//
 
-server.get('/info', (req, res) => {
-	let response = 'Phonebook has info for ' + persons.length + ' people';
-	response += '<br><br>' + new Date().toString();
-	res.send(response);
+server.get('/info', async (req, res, next) => {
+  let persons: any[] = [];
+  try {
+    persons = await dao.GetAll();
+  } catch (error) {
+    return next(error);
+  }
+
+  let response = 'Phonebook has info for ' + persons.length + ' people';
+  response += '<br><br>' + new Date().toString();
+  res.send(response);
 });
 
-server.get('/api/persons', (req, res) => {
-	res.json(persons);
+server.get('/api/persons', async (req, res, next) => {
+  try {
+    res.json(await dao.GetAll());
+  } catch (error) {
+    return next(error);
+  }
 });
 
-server.get('/api/persons/:id', (req, res) => {
-	const data = persons.find(x => x.id === Number(req.params.id));
+server.get('/api/persons/:id', async (req, res, next) => {
+  let person: any;
+  try {
+    person = await dao.GetByID(req.params.id);
+  } catch (error) {
+    return next(error);
+  }
 
-	if (data) {
-		res.json(data);
-	} else {
-		res.status(404).end();
-	}
+  if (person) {
+    res.json(person);
+  } else {
+    res.status(404).end();
+  }
 });
 
-server.post('/api/persons', (req, res) => {
-	let data = {
-		id: req.body.id,
-		name: req.body.name,
-		number: req.body.number
-	};
+server.post('/api/persons', async (req, res, next) => {
+  const data = {
+    id: '',
+    name: req.body.name,
+    number: req.body.number
+  };
 
-	if (!data.name || !data.number) {
-		return res.status(400).end('missing name or number');
-	}
-
-	if (persons.find(x => x.name === data.name)) {
-		return res.status(400).end('duplicate name');
-	}
-
-	let id = 0;
-	while (!id || persons.find(x => x.id === id)) {
-		id = Math.floor(Math.random() * 10000000);
-	}
-
-	data.id = id;
-	persons.push(data);
-	res.status(200).end();
+  dao.Add(data).then(x => res.json(x)).catch(next);
 });
 
-server.delete('/api/persons/:id', (req, res) => {
-	const id = Number(req.params.id);
-	persons = persons.filter(x => x.id !== id);
-	res.status(204).end();
+server.delete('/api/persons/:id', (req, res, next) => {
+  const id = req.params.id;
+  dao.Delete(id).then(() => {
+    res.status(204).end();
+  }).catch(next);
 });
 
-server.put('/api/persons/:id', (req, res) => {
-	const id = Number(req.params.id);
-	const data = {
-		id: id,
-		name: req.body.name,
-		number: req.body.number
-	};
+server.put('/api/persons/:id', async (req, res, next) => {
+  const data = {
+    id: req.params.id,
+    name: req.body.name,
+    number: req.body.number
+  };
 
-	if (!persons.find(x => x.id === id)) {
-		return res.status(404).end();
-	}
-
-	if (!data.name || !data.number) {
-		return res.status(400).end('missing name or number');
-	}
-
-	persons = persons.map(x => x.id !== id ? x : data);
-	res.status(200).end();
+  dao.Update(data).then(x => res.json(x)).catch(next);
 });
 
-const PORT = process.env.PORT || 3001;
+//=====| other |=====//
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send('unknown endpoint');
+};
+
+server.use(unknownEndpoint);
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message);
+  if (error.name === 'CastError')
+    return res.status(400).send('malformatted id');
+  if (error.name === 'ValidationError')
+    return res.status(400).send(error.message);
+  next(error);
+};
+
+server.use(errorHandler);
+
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
-	console.log('Server running on port ' + PORT);
+  console.log('Server running on port ' + PORT);
 });

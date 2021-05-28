@@ -5,6 +5,8 @@ import Numbers from './Numbers';
 import Server from './Server';
 import Notification from './Notification';
 
+const alertTimeout = 5000;
+
 function App() {
   const init: Person[] = [];
   const defaultError: Alert = { type: 'success', msg: '' };
@@ -16,8 +18,8 @@ function App() {
     if (!window.confirm('Delete ' + persons.find(x => x.id === person.id)?.name))
       return;
     Server.Delete(person.id).then(() => setPersons(persons.filter(x => x.id !== person.id)))
-      .catch(() => {
-        setNotif({ type: 'error', msg: 'Information of ' + person.name + ' has already been removed' });
+      .catch(error => {
+        setNotif({ type: 'error', msg: error.toString() });
         Server.All().then(x => setPersons(x));
       });
   };
@@ -26,10 +28,14 @@ function App() {
     let found = persons.find(x => x.name === person.name);
 
     if (!found) {
-      Server.Add(person).then(x => setPersons([...persons, x]))
-        .catch(() => setNotif({ type: 'error', msg: 'Server out of sync, reloading' }));
-      setNotif({ type: 'success', msg: 'Added ' + person.name + ' succesfully' });
-      Server.All().then(x => setPersons(x));
+      Server.Add(person).then(x => {
+        setPersons([...persons, x]);
+        setNotif({ type: 'success', msg: 'Added ' + person.name + ' succesfully' });
+        Server.All().then(x => setPersons(x));
+      }).catch(error => {
+        setNotif({ type: 'error', msg: error.response.data });
+        console.log(error.response.data);
+      });
       return;
     }
 
@@ -41,8 +47,8 @@ function App() {
     Server.Replace(found).then(() => {
       setPersons(persons.map(x => x.id !== p.id ? x : p));
       setNotif({ type: 'success', msg: 'Modified ' + person.name + ' succesfully' });
-    }).catch(() => {
-      setNotif({ type: 'error', msg: 'Information of ' + person.name + ' has already been removed' });
+    }).catch(error => {
+      setNotif({ type: 'error', msg: error.toString() });
       Server.All().then(x => setPersons(x));
     });
   };
@@ -50,7 +56,7 @@ function App() {
   if (notification.msg !== '') {
     setTimeout(() => {
       setNotif(defaultError);
-    }, 2000);
+    }, alertTimeout);
   }
 
   useEffect(() => {
