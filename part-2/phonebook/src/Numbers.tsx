@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Numbers({ numbers, search, del }: { numbers: Person[], search: string, del: (person: Person) => void; }) {
+function Numbers({ persons, search, del }: { persons: Person[], search: string, del: (person: Person) => void; }) {
   const filter = (x: Person) => x.name.toLowerCase().includes(search.toLowerCase());
   const mapper = (x: Person) => (
     <p style={{ margin: 0 }} key={x.name}>
@@ -10,7 +10,7 @@ function Numbers({ numbers, search, del }: { numbers: Person[], search: string, 
 
   return (
     <div>
-      {numbers.filter(filter).map(mapper)}
+      {persons.filter(filter).map(mapper)}
     </div>
   );
 }

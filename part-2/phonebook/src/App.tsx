@@ -26,7 +26,7 @@ function App() {
     let found = persons.find(x => x.name === person.name);
 
     if (!found) {
-      Server.Add(person).then(() => setPersons([...persons, person]))
+      Server.Add(person).then(x => setPersons([...persons, x]))
         .catch(() => setNotif({ type: 'error', msg: 'Server out of sync, reloading' }));
       setNotif({ type: 'success', msg: 'Added ' + person.name + ' succesfully' });
       Server.All().then(x => setPersons(x));
@@ -65,7 +65,7 @@ function App() {
       {notification.msg !== '' ? Notification.Display(notification) : ''}
       <Form update={update} persons={persons} setNotif={setNotif} />
       <h3>Numbers</h3>
-      <Numbers numbers={persons} search={search} del={del} />
+      <Numbers persons={persons} search={search} del={del} />
     </div>
   );
 }

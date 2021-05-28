@@ -5,9 +5,8 @@ function Form({ update, persons, setNotif }: { persons: Person[], update: (value
   const [newNumber, setNewNumber] = useState('');
 
   const submit = (event: any) => {
-    const newID = persons[persons.length - 1].id + 1;
     event.preventDefault();
-    const person: Person = { id: newID, name: newName, number: newNumber };
+    const person: Person = { id: '', name: newName, number: newNumber };
 
     if (checkValidity(person, persons, setNotif))
       update(person);
