@@ -45,9 +45,9 @@ function App() {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
-        
+
         {notification}
-        
+
         <Switch>
           <Route path='/anecdote/:id'>
             <Single anecdotes={anecdotes} />
@@ -143,10 +143,10 @@ function CreateNew(props) {
       info,
       votes: 0
     });
-    
+
     history.push('/');
-    props.notify('A new anecdote \'' + content + '\' created!')
-    
+    props.notify('A new anecdote \'' + content + '\' created!');
+
     setTimeout(() => {
       props.notify('');
     }, 10000);
