@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Switch, Route, Link, Redirect, useParams, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
 
 function App() {
   const [anecdotes, setAnecdotes] = useState([
