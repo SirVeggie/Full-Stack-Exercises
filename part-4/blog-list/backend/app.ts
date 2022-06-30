@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import 'express-async-errors';
 import { MONGODB_URI, PORT } from './utils/config';
 import { logError, logInfo } from './utils/logger';
 import { errorHandler, requestLogger, unknownEndpoint } from './utils/middleware';

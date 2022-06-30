@@ -18,7 +18,7 @@ export function mostBlogs(blogs: Blog[]) {
     if (blogs.length === 0)
         return undefined;
     const authors = blogs.map(blog => blog.author);
-    const uniqueAuthors = [...new Set(authors)];
+    const uniqueAuthors = Array.from(new Set(authors));
     const authorCount = uniqueAuthors.map(author => {
         return {
             author,
@@ -33,7 +33,7 @@ export function mostLikes(blogs: Blog[]) {
     if (blogs.length === 0)
         return undefined;
     const authors = blogs.map(blog => blog.author);
-    const uniqueAuthors = [...new Set(authors)];
+    const uniqueAuthors = Array.from(new Set(authors));
     const authorCount = uniqueAuthors.map(author => {
         return {
             author,
