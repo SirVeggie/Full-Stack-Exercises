@@ -2,64 +2,29 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import { app } from '../app';
 import { Blog } from '../models/blog';
+import { User } from '../models/user';
+import { testBlogs } from '../utils/list_helper';
+import bcrypt from 'bcrypt';
 
 const api = supertest(app);
+let testUser = null as any;
 
-const blogs = [
-    {
-        _id: "5a422a851b54a676234d17f7",
-        title: "React patterns",
-        author: "Michael Chan",
-        url: "https://reactpatterns.com/",
-        likes: 7,
-        __v: 0
-    },
-    {
-        _id: "5a422aa71b54a676234d17f8",
-        title: "Go To Statement Considered Harmful",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-        likes: 5,
-        __v: 0
-    },
-    {
-        _id: "5a422b3a1b54a676234d17f9",
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-        likes: 12,
-        __v: 0
-    },
-    {
-        _id: "5a422b891b54a676234d17fa",
-        title: "First class tests",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-        likes: 10,
-        __v: 0
-    },
-    {
-        _id: "5a422ba71b54a676234d17fb",
-        title: "TDD harms architecture",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-        likes: 0,
-        __v: 0
-    },
-    {
-        _id: "5a422bc61b54a676234d17fc",
-        title: "Type wars",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-        likes: 2,
-        __v: 0
-    }
-];
 
 beforeEach(async () => {
+	await User.deleteMany({});
+	await new User({
+		username: 'root',
+		name: 'none',
+		passHash: await bcrypt.hash('magic', 10),
+		blogs: []
+	}).save();
+	
+	testUser = await User.findOne({ username: 'root' });
+	
 	await Blog.deleteMany({});
-	const promises = blogs
-		.map(blog => new Blog(blog))
+	const promises = testBlogs
+		.map(x => {return { ...x, user: testUser.id }})
+		.map(x => new Blog(x))
 		.map(x => x.save());
 	await Promise.all(promises);
 });
@@ -67,7 +32,7 @@ beforeEach(async () => {
 describe('fetching blogs', () => {
 	test('correct amount of blogs', async () => {
 		const res = await api.get('/api/blogs');
-		expect(res.body).toHaveLength(blogs.length);
+		expect(res.body).toHaveLength(testBlogs.length);
 	});
 
 	test('blogs are returned as json', async () => {
@@ -88,7 +53,8 @@ describe('creating blogs', () => {
 			author: 'asd',
 			title: 'asd',
 			url: 'asd',
-			likes: 0
+			likes: 0,
+			user: testUser.id
 		};
 		
 		await api
@@ -98,14 +64,15 @@ describe('creating blogs', () => {
 			.expect('Content-Type', /application\/json/);
 		
 		const res = await api.get('/api/blogs');
-		expect(res.body).toHaveLength(blogs.length + 1);
+		expect(res.body).toHaveLength(testBlogs.length + 1);
 	});
 
 	test('likes defaults to 0', async () => {
 		const blog: any = {
 			author: 'asd',
 			title: 'asd',
-			url: 'asd'
+			url: 'asd',
+			user: testUser.id
 		};
 		
 		await api
@@ -121,11 +88,19 @@ describe('creating blogs', () => {
 	test('missing data returns bad request', async () => {
 		const blog1: any = {
 			author: 'asd',
-			title: 'asd'
+			title: 'asd',
+			user: testUser.id
 		};
 		
 		const blog2: any = {
 			author: 'asd',
+			url: 'asd',
+			user: testUser.id
+		};
+		
+		const blog3: any = {
+			author: 'asd',
+			title: 'asd',
 			url: 'asd'
 		};
 		
@@ -138,6 +113,11 @@ describe('creating blogs', () => {
 			.post('/api/blogs')
 			.send(blog2)
 			.expect(400);
+		
+		await api
+			.post('/api/blogs')
+			.send(blog3)
+			.expect(400);
 	});
 });
 
@@ -149,7 +129,7 @@ describe('deleting blogs', () => {
 		.expect(200);
 		
 		body = (await api.get('/api/blogs')).body;
-		expect(body).toHaveLength(blogs.length - 1);
+		expect(body).toHaveLength(testBlogs.length - 1);
 	});
 });
 
@@ -161,7 +141,8 @@ describe('updating blogs', () => {
 			author: 'asd',
 			title: 'asd',
 			url: 'asd',
-			likes: 0
+			likes: 0,
+			user: testUser.id
 		};
 		
 		await api
@@ -184,7 +165,8 @@ describe('updating blogs', () => {
 			author: 'asd',
 			title: 'asd',
 			url: 'asd',
-			likes: 0
+			likes: 0,
+			user: testUser.id
 		};
 		
 		await api
