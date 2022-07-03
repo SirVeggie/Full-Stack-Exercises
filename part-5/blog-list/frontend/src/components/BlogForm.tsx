@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createBlog } from "../services/blogs";
-import { useLogin } from "../tools/LoginContext";
 import { useNotification } from "../tools/NotificationContext";
 import { Toggle } from "./Toggle";
 
@@ -15,7 +14,6 @@ export function BlogForm({ refresh }: BlogFormProps) {
   const [url, setUrl] = useState('');
 
   const { setNotification } = useNotification();
-  const { username, token } = useLogin();
 
   const hide = () => {
     setVisible(false);
@@ -31,13 +29,14 @@ export function BlogForm({ refresh }: BlogFormProps) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    createBlog({ title, author, url, username, token })
+    createBlog({ title, author, url })
       .then(() => {
         setTitle('');
         setAuthor('');
         setUrl('');
         refresh();
         setNotification('Blog created', 'success');
+        setVisible(false);
       }).catch(error => {
         setNotification(error.response.data.error, 'error');
       });

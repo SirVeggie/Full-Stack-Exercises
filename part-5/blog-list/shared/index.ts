@@ -15,3 +15,13 @@ export type UserType = {
 	passHash: string;
 	blogs: string[];
 };
+
+export function sanitizeBlog(blog: BlogType): BlogType | null {
+    if (!blog.title || !blog.url || !blog.user)
+        return null;
+    return {
+        ...blog,
+        likes: blog.likes ?? 0,
+        user: (blog.user as any).id ?? blog.user
+    };
+}
