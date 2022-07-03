@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3003",
   "scripts": {
     "start": "react-scripts start",
     "create_build": "react-scripts build",
@@ -11,7 +11,6 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "shared": "file:../shared",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -19,9 +18,12 @@
     "@types/node": "^16.11.22",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "axios": "^0.27.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-jss": "^10.9.0",
     "react-scripts": "5.0.0",
+    "shared": "file:../shared",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },

@@ -1,3 +1,11 @@
 body {
   margin: 0;
+  padding: 20px 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  gap: 5px;
 }

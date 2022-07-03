@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
+import { UserType } from 'shared';
 
-export type User = {
-	username: string;
-	name: string;
-	passHash: string;
-	blogs: string[];
-};
+export type User = UserType;
 
 const userSchema = new mongoose.Schema<User>({
 	username: String,

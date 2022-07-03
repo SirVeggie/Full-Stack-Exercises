@@ -1,12 +1,7 @@
 import mongoose from 'mongoose';
+import { BlogType } from 'shared';
 
-export type Blog = {
-    title: string;
-    author: string;
-    url: string;
-    likes: number;
-    user: mongoose.SchemaDefinitionProperty<string>;
-};
+export type Blog = BlogType;
 
 const blogSchema = new mongoose.Schema<Blog>({
     title: String,

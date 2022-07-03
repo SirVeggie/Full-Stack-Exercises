@@ -11,5 +11,9 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "mongoose": "^6.4.2"
   }
 }
