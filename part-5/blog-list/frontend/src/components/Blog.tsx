@@ -9,7 +9,7 @@ export type Blog = BlogType;
 
 type BlogProps = {
   blog: Blog;
-  refresh: () => void;
+  refresh?: () => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -24,7 +24,7 @@ export function Blog({ blog, refresh }: BlogProps) {
     likeBlog(blog)
       .then(() => {
         setNotification('Blog liked', 'success');
-        refresh();
+        refresh?.();
       }).catch(error => {
         setNotification(error.response.data.error, 'error');
       });
@@ -34,7 +34,7 @@ export function Blog({ blog, refresh }: BlogProps) {
     deleteBlog(blog.id ?? '')
       .then(() => {
         setNotification('Blog deleted', 'success');
-        refresh();
+        refresh?.();
       }).catch(error => {
         setNotification(error.response.data.error, 'error');
       });
@@ -43,7 +43,8 @@ export function Blog({ blog, refresh }: BlogProps) {
   return (
     <div className={s.base}>
       <div>
-        <span>{blog.title}</span> by {blog.author}
+        <span>{blog.title}</span>
+        <Toggle visible={!expanded}> by {blog.author}</Toggle>
       </div>
       <Toggle visible={expanded}>
         <div>{blog.url}</div>
@@ -67,7 +68,6 @@ const useStyles = createUseStyles({
     backgroundColor: '#f0f0f0',
     padding: '10px',
     borderRadius: '5px',
-
 
     '& span:first-child': {
       fontWeight: 600,

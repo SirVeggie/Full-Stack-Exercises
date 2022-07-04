@@ -4,10 +4,15 @@ import { useNotification } from "../tools/NotificationContext";
 import { Toggle } from "./Toggle";
 
 type BlogFormProps = {
-  refresh: () => void;
+  refresh?: () => void;
+  onSubmit?: (data: {
+    title: string;
+    author: string;
+    url: string;
+  }) => void;
 };
 
-export function BlogForm({ refresh }: BlogFormProps) {
+export function BlogForm({ refresh, onSubmit }: BlogFormProps) {
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -15,26 +20,28 @@ export function BlogForm({ refresh }: BlogFormProps) {
 
   const { setNotification } = useNotification();
 
-  const hide = () => {
+  const hide = (e: any) => {
+    e.preventDefault();
     setVisible(false);
     setTitle('');
     setAuthor('');
     setUrl('');
   };
-  
+
   const show = () => {
     setVisible(true);
-  }
-  
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  };
+
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    onSubmit?.({ title, author, url });
     createBlog({ title, author, url })
       .then(() => {
         setTitle('');
         setAuthor('');
         setUrl('');
-        refresh();
+        refresh?.();
         setNotification('Blog created', 'success');
         setVisible(false);
       }).catch(error => {
@@ -50,13 +57,19 @@ export function BlogForm({ refresh }: BlogFormProps) {
 
       <Toggle visible={visible}>
         <h2>Create Blog</h2>
-        <form onSubmit={onSubmit}>
-          Title
-          <input value={title} onChange={e => setTitle(e.target.value ?? '')} />
-          Author
-          <input value={author} onChange={e => setAuthor(e.target.value ?? '')} />
-          Url
-          <input value={url} onChange={e => setUrl(e.target.value ?? '')} />
+        <form onSubmit={submit}>
+          <label>Title<br />
+            <input value={title} onChange={e => setTitle(e.target.value ?? '')} />
+          </label>
+          
+          <label>Author<br />
+            <input value={author} onChange={e => setAuthor(e.target.value ?? '')} />
+          </label>
+          
+          <label>Url<br />
+            <input value={url} onChange={e => setUrl(e.target.value ?? '')} />
+          </label>
+          
           <button type='submit'>Create</button>
           <button onClick={hide}>Cancel</button>
         </form>
