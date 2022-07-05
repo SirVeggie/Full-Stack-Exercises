@@ -15,10 +15,13 @@ export function Toggle({ visible, children, animated, span }: ToggleProps) {
   const ref = useRef<any>();
   
   useEffect(() => {
+    if (!animated)
+      return;
     setMaxHeight(ref.current?.clientHeight ?? 0);
     setTimeout(() => {
       setWait(false);
     }, 100);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!animated) {

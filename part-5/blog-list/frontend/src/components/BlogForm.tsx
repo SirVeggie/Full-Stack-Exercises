@@ -10,9 +10,10 @@ type BlogFormProps = {
     author: string;
     url: string;
   }) => void;
+  noAnimation?: boolean;
 };
 
-export function BlogForm({ refresh, onSubmit }: BlogFormProps) {
+export function BlogForm({ refresh, onSubmit, noAnimation }: BlogFormProps) {
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -51,11 +52,11 @@ export function BlogForm({ refresh, onSubmit }: BlogFormProps) {
 
   return (
     <div>
-      <Toggle visible={!visible} animated>
+      <Toggle visible={!visible} animated={!noAnimation}>
         <button onClick={show}>Create new</button>
       </Toggle>
 
-      <Toggle visible={visible} animated>
+      <Toggle visible={visible} animated={!noAnimation}>
         <h2>Create Blog</h2>
         <form onSubmit={submit}>
           <label>Title<br />

@@ -16,7 +16,7 @@ const testblog = {
 };
 
 test('renders content', () => {
-  render(<Blog blog={testblog} />);
+  render(<Blog blog={testblog} noAnimation />);
 
   expect(screen.getByText('Test blog')).toBeDefined();
   expect(screen.getByText('Bob', { exact: false })).toBeDefined();
@@ -25,7 +25,7 @@ test('renders content', () => {
 });
 
 test('renders content with expanded', () => {
-  render(<Blog blog={testblog} />);
+  render(<Blog blog={testblog} noAnimation />);
 
   // const user = userEvent.setup();
   const button = screen.getByText('Show');
@@ -40,7 +40,7 @@ test('renders content with expanded', () => {
 test('renders content with expanded and likes', () => {
   const mockHandler = jest.fn();
 
-  render(<Blog blog={testblog} />);
+  render(<Blog blog={testblog} noAnimation />);
 
   const button = screen.getByText('Show');
   userEvent.click(button);

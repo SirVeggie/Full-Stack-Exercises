@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 test('form submits with correct data', () => {
   const mockHandler = jest.fn();
 
-  render(<BlogForm onSubmit={mockHandler} />);
+  render(<BlogForm onSubmit={mockHandler} noAnimation />);
 
   const show = screen.getByText('Create new');
   userEvent.click(show);

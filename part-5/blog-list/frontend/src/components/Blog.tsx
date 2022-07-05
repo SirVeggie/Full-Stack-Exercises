@@ -10,10 +10,11 @@ export type Blog = BlogType;
 type BlogProps = {
   blog: Blog;
   refresh?: () => void;
+  noAnimation?: boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export function Blog({ blog, refresh }: BlogProps) {
+export function Blog({ blog, refresh, noAnimation }: BlogProps) {
   const [expanded, setExpanded] = useState(false);
   const { setNotification } = useNotification();
   const s = useStyles();
@@ -44,9 +45,9 @@ export function Blog({ blog, refresh }: BlogProps) {
     <div className={s.base}>
       <div>
         <span>{blog.title}</span>
-        <Toggle visible={!expanded} animated span> by {blog.author}</Toggle>
+        <Toggle visible={!expanded} animated={!noAnimation} span> by {blog.author}</Toggle>
       </div>
-      <Toggle visible={expanded} animated>
+      <Toggle visible={expanded} animated={!noAnimation}>
         <div>{blog.url}</div>
         <span>likes: {blog.likes}</span>
         <button className={s.like} onClick={like}>Like</button>
