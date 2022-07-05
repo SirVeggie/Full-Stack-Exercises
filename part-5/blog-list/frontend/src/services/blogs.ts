@@ -36,7 +36,6 @@ export async function createBlog(info: createBlogInfo) {
 
 export function likeBlog(blog: BlogType) {
   const url = `${baseUrl}/${blog.id}`;
-  console.log(url);
   return axios.put(url, sanitizeBlog({ ...blog, likes: blog.likes + 1 }));
 }
 

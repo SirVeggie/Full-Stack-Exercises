@@ -51,11 +51,11 @@ export function BlogForm({ refresh, onSubmit }: BlogFormProps) {
 
   return (
     <div>
-      <Toggle visible={!visible}>
+      <Toggle visible={!visible} animated>
         <button onClick={show}>Create new</button>
       </Toggle>
 
-      <Toggle visible={visible}>
+      <Toggle visible={visible} animated>
         <h2>Create Blog</h2>
         <form onSubmit={submit}>
           <label>Title<br />

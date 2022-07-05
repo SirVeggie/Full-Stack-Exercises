@@ -44,9 +44,9 @@ export function Blog({ blog, refresh }: BlogProps) {
     <div className={s.base}>
       <div>
         <span>{blog.title}</span>
-        <Toggle visible={!expanded}> by {blog.author}</Toggle>
+        <Toggle visible={!expanded} animated span> by {blog.author}</Toggle>
       </div>
-      <Toggle visible={expanded}>
+      <Toggle visible={expanded} animated>
         <div>{blog.url}</div>
         <span>likes: {blog.likes}</span>
         <button className={s.like} onClick={like}>Like</button>
