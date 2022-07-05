@@ -27,9 +27,9 @@ export function Login() {
     <div>
       <h2>Login</h2>
       <form onSubmit={onSubmit}>
-        <input value={username} onChange={e => setUsername(e.target.value ?? '')} />
-        <input value={password} onChange={e => setPassword(e.target.value ?? '')} type='password' />
-        <button>Login</button>
+        <input id='username' value={username} onChange={e => setUsername(e.target.value ?? '')} />
+        <input id='password' value={password} onChange={e => setPassword(e.target.value ?? '')} type='password' />
+        <button id='login-button' type='submit'>Login</button>
       </form>
     </div>
   );

@@ -8,7 +8,8 @@
     "create_build": "react-scripts build",
     "build": "npm run create_build && cp -r build ../backend/",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -19,6 +20,7 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "axios": "^0.27.2",
+    "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-jss": "^10.9.0",
@@ -44,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^10.3.0"
   }
 }

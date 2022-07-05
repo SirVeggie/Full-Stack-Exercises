@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import { blogRouter } from './controllers/blogRouter';
 import { userRouter } from './controllers/userRouter';
 import { loginRouter } from './controllers/login';
+import { testRouter } from './controllers/testRouter';
 
 logInfo(`Connecting to ${MONGODB_URI}`);
 
@@ -29,6 +30,10 @@ app.use(userExtractor);
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
+
+if (process.env.NODE_ENV === 'test') {
+    app.use('/api/test', testRouter);
+}
 
 app.use(unknownEndpoint);
 app.use(errorHandler);

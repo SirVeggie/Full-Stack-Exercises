@@ -4,6 +4,7 @@ import { BlogType } from 'shared';
 import { deleteBlog, likeBlog } from '../services/blogs';
 import { useNotification } from '../tools/NotificationContext';
 import { Toggle } from './Toggle';
+import cx from 'classnames';
 
 export type Blog = BlogType;
 
@@ -42,14 +43,14 @@ export function Blog({ blog, refresh, noAnimation }: BlogProps) {
   };
 
   return (
-    <div className={s.base}>
+    <div className={cx(s.base, 'blog')}>
       <div>
         <span>{blog.title}</span>
         <Toggle visible={!expanded} animated={!noAnimation} span> by {blog.author}</Toggle>
       </div>
       <Toggle visible={expanded} animated={!noAnimation}>
         <div>{blog.url}</div>
-        <span>likes: {blog.likes}</span>
+        <span>Likes: {blog.likes}</span>
         <button className={s.like} onClick={like}>Like</button>
         <div>Author: {blog.author}</div>
         <div>Uploader: {(blog.user as any).username}</div>

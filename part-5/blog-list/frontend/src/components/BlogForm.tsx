@@ -60,17 +60,20 @@ export function BlogForm({ refresh, onSubmit, noAnimation }: BlogFormProps) {
         <h2>Create Blog</h2>
         <form onSubmit={submit}>
           <label>Title<br />
-            <input value={title} onChange={e => setTitle(e.target.value ?? '')} />
+            <input
+              id='title-input'
+              value={title}
+              onChange={e => setTitle(e.target.value ?? '')} />
           </label>
-          
+
           <label>Author<br />
             <input value={author} onChange={e => setAuthor(e.target.value ?? '')} />
           </label>
-          
+
           <label>Url<br />
             <input value={url} onChange={e => setUrl(e.target.value ?? '')} />
           </label>
-          
+
           <button type='submit'>Create</button>
           <button onClick={hide}>Cancel</button>
         </form>
