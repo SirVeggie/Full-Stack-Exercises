@@ -23,6 +23,7 @@ const useStyles = createUseStyles({
   base: {
     pointerEvents: 'none',
     position: 'fixed',
+    zIndex: 100,
     display: 'flex',
     justifyContent: 'center',
     top: 0,
