@@ -73,10 +73,6 @@ const useStyles = createUseStyles({
 
     '& span:first-child': {
       fontWeight: 600,
-    },
-    
-    '& button': {
-      cursor: 'pointer'
     }
   },
 

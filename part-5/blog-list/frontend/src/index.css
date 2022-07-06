@@ -10,3 +10,7 @@ form {
   max-width: 300px;
   gap: 5px;
 }
+
+button {
+  cursor: pointer;
+}

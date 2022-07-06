@@ -12,6 +12,7 @@ function App() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') ?? '{}');
     setUser(user.username, user.token);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
