@@ -1,0 +1,73 @@
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "admin"
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyYzA1NzlmZmZmZjU1YTI3MzM2ZGE5ZiIsImlhdCI6MTY1Njc5OTE2NCwiZXhwIjoxNjU2ODAyNzY0fQ.3RQUeUWZKrJkHxLFzHWM9IWKBxPUAzVjMU9I4IF7TQw
+
+{
+  "title": "Test Blog",
+  "author": "Test Author",
+  "url": "http://test.com",
+  "likes": 5
+}
+
+###
+
+PUT http://localhost:3003/api/blogs/62c0bfe6b0f83e9371627fe6
+Content-Type: application/json
+
+{
+  "title": "Changed Blog",
+  "author": "Test Author",
+  "url": "http://newsite.com",
+  "likes": 1,
+  "user": "62c0579fffff55a27336da9f"
+}
+
+###
+
+PUT http://localhost:3003/api/blogs/62c0bfe6b0f83e9371627fe6
+Content-Type: application/json
+
+{
+  "title": "Original Blog",
+  "author": "Test Author",
+  "url": "http://original.com",
+  "likes": 1,
+  "user": "62c0579fffff55a27336da9f"
+}
+
+###
+
+DELETE http://localhost:3003/api/blogs/62c07c67d2029479a9255bbc
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyYzA1NzlmZmZmZjU1YTI3MzM2ZGE5ZiIsImlhdCI6MTY1Njc5OTE2NCwiZXhwIjoxNjU2ODAyNzY0fQ.3RQUeUWZKrJkHxLFzHWM9IWKBxPUAzVjMU9I4IF7TQw
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "root",
+  "name": "none",
+  "password": "admin"
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "veggie",
+  "name": "Veikka",
+  "password": "magic"
+}

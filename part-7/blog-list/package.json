@@ -1,0 +1,14 @@
+{
+  "name": "blog-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "prebuild": "cd shared && npm i && npm run build && cd ../backend && npm i && npm run build && cd ../frontend && npm i && npm run build",
+    "deploy": "",
+    "prod": "npm run prebuild && npm start"
+  },
+  "author": "",
+  "license": "MIT"
+}

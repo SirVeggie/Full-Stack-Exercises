@@ -1,0 +1,19 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "mongoose": "^6.4.2"
+  }
+}
