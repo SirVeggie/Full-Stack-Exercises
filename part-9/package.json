@@ -1,0 +1,25 @@
+{
+  "name": "part-9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "calculateBmi": "ts-node bmiCalculator.ts",
+    "calculateExercises": "ts-node exerciseCalculator.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SirVeggie/Full-Stack-Exercises.git"
+  },
+  "author": "Veikka Pulsa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SirVeggie/Full-Stack-Exercises/issues"
+  },
+  "homepage": "https://github.com/SirVeggie/Full-Stack-Exercises#readme",
+  "devDependencies": {
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  }
+}
