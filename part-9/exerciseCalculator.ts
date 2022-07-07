@@ -6,7 +6,7 @@ if (exercises) {
     console.log('Please provide valid numbers');
 }
 
-type ExerciseType = {
+export type ExerciseType = {
     periodLength: number;
     trainingDays: number;
     success: boolean;
@@ -16,15 +16,15 @@ type ExerciseType = {
     average: number;
 };
 
-function calculateExercise(hours: number[], target: number): ExerciseType {
+export function calculateExercise(hours: number[], target: number): ExerciseType | null {
     if (isNaN(target) || hours.some(x => isNaN(x))) {
         return null;
     }
-    
+
     const average = hours.reduce((a, b) => a + b, 0) / hours.length;
     const days = hours.reduce((acc, curr) => acc + (curr > 0 ? 1 : 0), 0);
     const rating = getRating(average, target);
-    
+
     const exercise: ExerciseType = {
         periodLength: hours.length,
         trainingDays: days,
@@ -41,7 +41,7 @@ function calculateExercise(hours: number[], target: number): ExerciseType {
 type Rating = {
     value: number;
     description: string;
-}
+};
 
 function getRating(average: number, target: number): Rating {
     if (average == 0) {
@@ -54,7 +54,7 @@ function getRating(average: number, target: number): Rating {
             value: 2,
             description: "Try harder next time"
         };
-    } else if (average >= target) {
+    } else {
         return {
             value: 3,
             description: "Not bad, punk"

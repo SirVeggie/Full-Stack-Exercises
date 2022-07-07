@@ -1,7 +1,7 @@
 
 console.log(calculateBmi(Number(process.argv[2]), Number(process.argv[3])));
 
-function calculateBmi(height: number, weight: number): string {
+export function calculateBmi(height: number, weight: number): string {
     if (isNaN(height) || isNaN(weight)) {
         return 'Please provide valid numbers';
     }
