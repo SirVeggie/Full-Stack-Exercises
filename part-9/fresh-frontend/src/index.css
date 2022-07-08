@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.app {
+  padding: 20px 50px;
+}
+
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
+}
+
+.parts > div {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.parts .title {
+  font-size: 1.1em;
+  font-weight: bold;
+}
