@@ -47,7 +47,7 @@ export function getPatientFromData(object: unknown): Patient {
         return {
             id: dirtyData.id ? getString(dirtyData.id) : getUUID(),
             name: getString(dirtyData.name),
-            dateOfBirth: getString(dirtyData.dateOfBirth),
+            dateOfBirth: getDate(dirtyData.dateOfBirth),
             ssn: getString(dirtyData.ssn),
             gender: getGender(dirtyData.gender),
             occupation: getString(dirtyData.occupation),
@@ -55,6 +55,17 @@ export function getPatientFromData(object: unknown): Patient {
     } catch (error: unknown) {
         if (error === 'CastError')
             throw { error: 'Invalid patient object' };
+        if (error === 'Invalid date')
+            throw { error: 'Invalid date' };
         throw error;
     }
+}
+
+function getDate(object: unknown): string {
+    if (!isString(object))
+        throw 'CastError';
+    const date = new Date(object);
+    if (isNaN(date.getTime()))
+        throw 'Invalid date';
+    return date.toISOString().split('T')[0];
 }
