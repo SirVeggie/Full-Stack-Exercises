@@ -1,11 +1,11 @@
-import diagnosisData from '../data/diagnoses.json';
+import { diagnoses } from '../data/diagnoses';
 
-export type Diagnose = {
+export type Diagnosis = {
     code: string;
     name: string;
     latin?: string;
 };
 
-export function getDiagnoses(): Diagnose[] {
-    return diagnosisData as Diagnose[];
+export function getDiagnoses(): Diagnosis[] {
+    return diagnoses;
 }
