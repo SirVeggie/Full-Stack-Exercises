@@ -84,6 +84,8 @@ const resolvers = {
   Mutation: {
     addBook: (_root: any, args: any) => {
       const book: Book = { ...args, id: uuid() };
+      if (books.find(b => b.title === book.title))
+        throw new UserInputError(`Book '${args.title}' already exists`);
       if (!authors.find(author => author.name === args.author))
         authors.push({ name: args.author, id: uuid() });
       books.push(book);
@@ -93,7 +95,7 @@ const resolvers = {
     addAuthor: (_root: any, args: any) => {
       const author: Author = { ...args, id: uuid() };
       if (authors.find(author => author.name === args.name))
-        throw new UserInputError(`Author ${args.name} already exists`);
+        throw new UserInputError(`Author '${args.name}' already exists`);
       authors.push(author);
       return author;
     },
@@ -101,7 +103,7 @@ const resolvers = {
     editAuthor: (_root: any, args: any) => {
       const author: Author | undefined = authors.find(author => author.name === args.name);
       if (!author)
-        return null;
+        throw new UserInputError(`Author '${args.name}' does not exist`);
       author.born = args.born;
       return author;
     }
