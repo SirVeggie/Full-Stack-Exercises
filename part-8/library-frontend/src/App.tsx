@@ -1,22 +1,20 @@
-import { useState } from 'react';
-import { Authors } from './components/Authors';
-import { BookForm } from './components/BookForm';
-import { Books } from './components/Books';
+import { useEffect, useState } from 'react';
+import { Auth } from './components/Auth';
+import { Main } from './components/Main';
 
 export function App() {
-  const [page, setPage] = useState('authors' as 'authors' | 'books' | 'addBook');
+  const [token, setToken] = useState(null as string | null);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('library-token');
+    setToken(token);
+  }, []);
   
   return (
     <div className='app'>
       <h2>GraphQL Library</h2>
-      <div>
-        <button onClick={() => setPage('authors')}>Authors</button>
-        <button onClick={() => setPage('books')}>Books</button>
-        <button onClick={() => setPage('addBook')}>Add Book</button>
-      </div>
-      {page === 'authors' && <Authors />}
-      {page === 'books' && <Books />}
-      {page === 'addBook' && <BookForm />}
+      {token && <Main token={token} setToken={setToken} />}
+      {!token && <Auth token={token} setToken={setToken} />}
     </div>
   );
 }

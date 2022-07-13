@@ -8,14 +8,23 @@ function generateOptions(names: string[]) {
 }
 
 export function SetBirth({ names }: { names: string[]; }) {
-  const [setBirth] = useMutation(SET_BIRTHYEAR, {
-    refetchQueries: ['allAuthors']
-  });
-
   const options = generateOptions(names);
   const [name, setName] = useState(null as typeof options[number] | null);
   const [year, setYear] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [setBirth] = useMutation(SET_BIRTHYEAR, {
+    refetchQueries: ['allAuthors'],
+    onError: (error) => {
+      console.log(error);
+      setErrorMessage(error.message);
+    },
+    onCompleted: () => {
+      setName(null);
+      setYear('');
+      setErrorMessage('');
+    }
+  });
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,12 +39,6 @@ export function SetBirth({ names }: { names: string[]; }) {
         name: name!.value,
         born: parseInt(year)
       }
-    }).then(() => {
-      setName(null);
-      setYear('');
-      setErrorMessage('');
-    }).catch(error => {
-      setErrorMessage(error.message);
     });
   };
 

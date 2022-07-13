@@ -11,14 +11,23 @@ export function BookForm() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: ['allBooks', 'allAuthors']
+    refetchQueries: ['allBooks', 'allAuthors'],
+    onError: (error) => {
+      setErrorMessage(error.message);
+    },
+    onCompleted: (data) => {
+      setTitle('');
+      setAuthor('');
+      setPublished('');
+      setGenres([]);
+      setErrorMessage('');
+    }
   });
-
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isNaN(Number(published)))
+    if (isNaN(parseInt(published)))
       return setErrorMessage('Published year must be a number');
 
     addBook({
@@ -28,14 +37,6 @@ export function BookForm() {
         published: parseInt(published),
         genres
       }
-    }).then(() => {
-      setTitle('');
-      setAuthor('');
-      setPublished('');
-      setGenres([]);
-      setErrorMessage('');
-    }).catch(error => {
-      setErrorMessage(error.message);
     });
   };
 
